@@ -41,8 +41,8 @@
     }
 
     // FOR PET PROCESSES
-    if(isset($_GET['deletePet'])) {
-        $id = $_GET['deletePet'];
+    if(isset($_GET['delete-pet'])) {
+        $id = $_GET['delete-pet'];
         $stmt = $con->prepare("DELETE FROM pets WHERE petId = ?");
         $stmt->bind_param("s", $id);
         $stmt->execute();
@@ -59,7 +59,6 @@
         $status = $_POST['status'];
         $availability = $_POST['availability'];
 
-        // update
         $stmt = $con->prepare("UPDATE pets SET `name` = ?, `type` = ?, `age` = ?, `status` = ?, `availability` = ? WHERE `petId` = ?");
         $stmt->bind_param("ssssss", $name, $type, $age, $status, $availability, $id);
         $stmt->execute();
@@ -69,8 +68,8 @@
     }
 
     // FOR USER PROCESSES
-    if(isset($_GET['deleteUser'])) {
-        $id = $_GET['deleteUser'];
+    if(isset($_GET['delete-user'])) {
+        $id = $_GET['delete-user'];
         $stmt = $con->prepare("DELETE FROM users WHERE userId = ?");
         $stmt->bind_param("s", $id);
         $stmt->execute();
@@ -89,7 +88,6 @@
         $phoneNum = $_POST['phone'];
         $role = $_POST['role'];
 
-        // update
         $stmt = $con->prepare("UPDATE users SET `firstname` = ?, `lastname` = ?, `email` = ?, `age` = ?, `address` = ?, `phoneNum` = ?, `role` = ? WHERE `userId` = ?");
         $stmt->bind_param("ssssssss", $firstname, $lastname, $email, $age, $address, $phoneNum, $role, $id);
         $stmt->execute();
@@ -97,4 +95,78 @@
         header('Location: ../users.php');
         exit();
     }
-?>
+
+    // FOR REQUESTS PROCESSES
+    if(isset($_GET['deny-request'])) {
+        $id = $_GET['deny-request'];
+        $denied = 'Denied';
+
+        $stmt = $con->prepare("UPDATE requests SET `requestStatus` = ? WHERE `requestId` = ?");
+        $stmt->bind_param("ss", $denied, $id);
+        $stmt->execute();
+
+        header('Location: ../requests.php');
+        exit();
+    }
+
+    if(isset($_POST['accept-request'])) {
+        $id = $_POST['requestId'];
+        $accepted = 'Accepted';
+
+        $stmt = $con->prepare("UPDATE requests SET `requestStatus` = ? WHERE `requestId` = ?");
+        $stmt->bind_param("ss", $accepted, $id);
+        $stmt->execute();
+
+        header('Location: ../requests.php');
+        exit();
+    }
+
+    // FOR MATERIALS PROCESSES
+    if(isset($_GET['delete-material'])) {
+        $id = $_GET['delete-material'];
+        $stmt = $con->prepare("DELETE FROM educmat WHERE matId = ?");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        
+        header('Location: ../materials.php');
+        exit();
+    }
+
+    if(isset($_POST['update-material'])) {
+        $id = $_POST['materialId'];
+        $title = $_POST['title'];
+        $reference = $_POST['reference'];
+        $content = $_POST['content'];
+        $status = $_POST['status'];
+
+        $stmt = $con->prepare("UPDATE educmat SET `title` = ?, `content` = ?, `reference` = ?, `status` = ? WHERE matId = ?");
+        $stmt->bind_param("sssss", $title, $content, $reference, $status, $id);
+        $stmt->execute();
+        
+        header('Location: ../materials.php');
+        exit();
+    }
+
+    // FOR DONATION PROCESSES
+    if(isset($_POST['withdraw'])) {
+        $transacId = uniqid();
+        $userId = $_SESSION['id'];
+        $itemId = $_POST['itemId'];
+        $dateTransac = date('Y-m-d H:i:s');
+        $totalAmount = $_POST['totalAmount'];
+        $remarks = 'Withdrawn';
+
+        // Insert into donationtransac table
+        $stmt1 = $con->prepare("INSERT INTO donationtransac (`transacId`, `userId`, `itemId`, `dateTransac`, `totalAmount`, `remarks`) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt1->bind_param("ssssss", $transacId, $userId, $itemId, $dateTransac, $totalAmount, $remarks);
+        $stmt1->execute();
+
+        // Update itemdonations table
+        $stmt2 = $con->prepare("UPDATE itemdonations SET `currentStocks` = 0 WHERE `itemId` = ?");
+        $stmt2->bind_param("s", $itemId);
+        $stmt2->execute();
+
+        header('Location: ../donations.php');
+        exit();
+    }
+?>  

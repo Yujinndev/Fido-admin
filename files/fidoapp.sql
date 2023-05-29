@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2023 at 04:17 AM
+-- Generation Time: May 29, 2023 at 03:51 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -52,17 +52,21 @@ CREATE TABLE `donationtransac` (
   `userId` int(11) NOT NULL,
   `itemId` int(11) NOT NULL,
   `dateTransac` datetime NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `totalAmount` int(11) NOT NULL
+  `quantity` int(11) DEFAULT NULL,
+  `totalAmount` int(11) NOT NULL,
+  `remarks` enum('Donated','Withdrawn') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `donationtransac`
 --
 
-INSERT INTO `donationtransac` (`transacId`, `userId`, `itemId`, `dateTransac`, `quantity`, `totalAmount`) VALUES
-('6470d238e3f10', 2, 1, '2023-05-24 04:01:50', 5, 3000),
-('6470d238e3f3b', 2, 2, '2023-05-26 17:01:21', 2, 998);
+INSERT INTO `donationtransac` (`transacId`, `userId`, `itemId`, `dateTransac`, `quantity`, `totalAmount`, `remarks`) VALUES
+('6470d238e3f10', 2, 1, '2023-05-24 04:01:50', 5, 3000, 'Donated'),
+('6470d238e3f3b', 2, 2, '2023-05-26 17:01:21', 2, 998, 'Donated'),
+('6470d238e3t32', 3, 3, '2023-05-29 09:06:10', 2, 998, 'Donated'),
+('647457772d446', 1, 3, '2023-05-29 09:42:47', NULL, 998, 'Withdrawn'),
+('647457c56dc6f', 1, 2, '2023-05-29 09:44:05', NULL, 998, 'Withdrawn');
 
 -- --------------------------------------------------------
 
@@ -73,7 +77,7 @@ INSERT INTO `donationtransac` (`transacId`, `userId`, `itemId`, `dateTransac`, `
 CREATE TABLE `educmat` (
   `matId` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `content` varchar(2500) NOT NULL,
   `author` int(11) NOT NULL,
   `datePosted` datetime NOT NULL,
   `reference` varchar(255) NOT NULL,
@@ -85,8 +89,8 @@ CREATE TABLE `educmat` (
 --
 
 INSERT INTO `educmat` (`matId`, `title`, `content`, `author`, `datePosted`, `reference`, `status`) VALUES
-(1, 'How to Stay Healthy Around Pets and Other Animals', 'There are many health benefits of owning a pet. They can increase opportunities to exercise, get outside, and socialize. Regular walking or playing with pets can decrease blood pressure, cholesterol levels, and triglyceride levels.  Pets can help manage l', 1, '2023-05-24 13:52:25', 'https://www.cdc.gov/healthypets/keeping-pets-and-people-healthy/how.html', 'Published'),
-(2, 'All About Dogs', 'Dogs can have many positive effects on the lives of their owners. They influence social, emotional, and cognitive development in children, promote an active lifestyle, provide companionship, and have even been able to detect oncoming epileptic seizures or', 1, '2023-05-24 03:52:25', 'https://www.cdc.gov/healthypets/pets/dogs.html', 'Unpublished');
+(1, 'How to Stay Healthy Around Pets and Other Animalsss', 'There are many health benefits of owning a pet. They can increase opportunities to exercise, get outside, and socialize. Regular walking or playing with pets can decrease blood pressure, cholesterol levels, and triglyceride levels.  Pets can help manage.', 1, '2023-05-24 13:52:25', 'https://www.cdc.gov/healthypets/keeping-pets-and-people-healthy/how.ht', 'Unpublished'),
+(2, 'All About Dogs', 'Dogs can have many positive effects on the lives of their owners. They influence social, emotional, and cognitive development in children, promote an active lifestyle, provide companionship, and have even been able to detect oncoming epileptic seizures or', 2, '2023-05-24 03:52:25', 'https://www.cdc.gov/healthypets/pets/dogs.html', 'Unpublished');
 
 -- --------------------------------------------------------
 
@@ -96,8 +100,8 @@ INSERT INTO `educmat` (`matId`, `title`, `content`, `author`, `datePosted`, `ref
 
 CREATE TABLE `itemdonations` (
   `itemId` int(11) NOT NULL,
-  `photo` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `photo` varchar(255) NOT NULL,
   `description` varchar(2500) NOT NULL,
   `price` int(11) NOT NULL,
   `currentStocks` int(11) NOT NULL,
@@ -109,10 +113,10 @@ CREATE TABLE `itemdonations` (
 -- Dumping data for table `itemdonations`
 --
 
-INSERT INTO `itemdonations` (`itemId`, `photo`, `name`, `description`, `price`, `currentStocks`, `quarterlyStocks`, `lastWithdrawn`) VALUES
-(1, 'https://o.remove.bg/downloads/3da4d0c0-fc2e-43d7-872e-81c6bcf75b7d/image-removebg-preview.png', 'Vitamins', 'Pet\'s vitamins provide essential nutrients and supplements to support the overall health and well-being of your beloved pets, ensuring they receive the necessary vitamins and minerals for optimal vitality.', 600, 3, 15, '2023-05-24 03:59:01'),
-(2, 'https://o.remove.bg/downloads/0b27995a-e7bc-4fe8-8b34-d384a63eb495/image-removebg-preview.png', 'Foods', 'High-quality dog and cat food offers a balanced and nutritious diet, promoting proper growth, strong immune systems, and healthy digestion for your furry companions.', 499, 2, 15, '2023-05-24 03:59:01'),
-(3, 'https://o.remove.bg/downloads/3b4a5ecd-957d-4c48-ba86-545469692cdd/flat-design-pet-grooming-template_23-2150057491-removebg-preview.png', 'Grooming', 'Grooming products help maintain the hygiene and appearance of your pets, keeping their coats clean, shiny, and free from tangles, while also providing soothing care for their skin.', 499, 1, 15, '2023-05-24 04:00:33');
+INSERT INTO `itemdonations` (`itemId`, `name`, `photo`, `description`, `price`, `currentStocks`, `quarterlyStocks`, `lastWithdrawn`) VALUES
+(1, 'Vitamins', 'https://o.remove.bg/downloads/3da4d0c0-fc2e-43d7-872e-81c6bcf75b7d/image-removebg-preview.png', 'Pet\'s vitamins provide essential nutrients and supplements to support the overall health and well-being of your beloved pets, ensuring they receive the necessary vitamins and minerals for optimal vitality.', 600, 5, 15, '2023-05-24 03:59:01'),
+(2, 'Foods', 'https://o.remove.bg/downloads/0b27995a-e7bc-4fe8-8b34-d384a63eb495/image-removebg-preview.png', 'High-quality dog and cat food offers a balanced and nutritious diet, promoting proper growth, strong immune systems, and healthy digestion for your furry companions.', 499, 0, 15, '2023-05-24 03:59:01'),
+(3, 'Grooming', 'https://o.remove.bg/downloads/3b4a5ecd-957d-4c48-ba86-545469692cdd/flat-design-pet-grooming-template_23-2150057491-removebg-preview.png', 'Grooming products help maintain the hygiene and appearance of your pets, keeping their coats clean, shiny, and free from tangles, while also providing soothing care for their skin.', 499, 0, 15, '2023-05-24 04:00:33');
 
 -- --------------------------------------------------------
 
@@ -160,7 +164,7 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`requestId`, `userId`, `petId`, `dateRequested`, `requestStatus`, `reason`) VALUES
-(1, 2, 1003, '2023-05-28 16:19:06', 'Waiting', 'I am interested in adopting a cat from Animal Welfare because I believe in giving a loving and forever home to a deserving feline companion. I value the opportunity to provide a second chance to a cat in need, offering them a safe and caring environment where they will be cherished as a member of my family. I am committed to providing the necessary care, love, and attention that a cat deserves, and I am excited about the prospect of creating a lifelong bond with a wonderful feline friend.');
+(1, 2, 1003, '2023-05-28 16:19:06', 'Accepted', 'I am interested in adopting a cat from Animal Welfare because I believe in giving a loving and forever home to a deserving feline companion. I value the opportunity to provide a second chance to a cat in need, offering them a safe and caring environment where they will be cherished as a member of my family. I am committed to providing the necessary care, love, and attention that a cat deserves, and I am excited about the prospect of creating a lifelong bond with a wonderful feline friend.');
 
 -- --------------------------------------------------------
 
@@ -179,7 +183,7 @@ CREATE TABLE `users` (
   `address` varchar(255) NOT NULL,
   `province` varchar(255) NOT NULL,
   `photo` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL,
+  `role` enum('Admin','User','','') NOT NULL,
   `adoptedPets` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -189,7 +193,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`userId`, `email`, `password`, `firstname`, `lastname`, `age`, `phoneNum`, `address`, `province`, `photo`, `role`, `adoptedPets`) VALUES
 (1, 'markeugene@gmail.com', 'admin123', 'Mark Eugene', 'Laysa', 19, '+639567953354', 'Borono, Tagudin 2714', 'Ilocos Sur', 'https://mdbcdn.b-cdn.net/img/new/avatars/8.webp', 'Admin', 0),
-(2, 'altheajazel@gmail.com', 'qwerty123', 'Althea Jazel', 'Rito', 20, '+639308375686', 'Lingsat, San Fernando 2500', 'La Union', 'https://mdbcdn.b-cdn.net/img/new/avatars/5.webp', 'User', 2);
+(2, 'altheajazel@gmail.com', 'qwerty123', 'Althea Jazel', 'Rito', 20, '+639308375686', 'Lingsat, San Fernando 2500', 'La Union', 'https://mdbcdn.b-cdn.net/img/new/avatars/5.webp', 'User', 2),
+(3, 'johndoe@gmail.com', 'john123', 'John', 'Doe', 22, '+632354654747', 'Lingsat, San Fernando', 'La Union', '', 'User', 0);
 
 --
 -- Indexes for dumped tables
@@ -281,7 +286,7 @@ ALTER TABLE `requests`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

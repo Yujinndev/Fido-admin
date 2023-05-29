@@ -31,14 +31,12 @@
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-right">
-          <!-- <h1>Hello, Friend!</h1>
-          <p>Enter your personal details and start journey with us</p> -->
+           <!-- logo here -->
         </div>
       </div>
     </div>
   </div>
 
-  <?php include 'scripts.php'?>
 
 </body>
 </html>

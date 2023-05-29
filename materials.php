@@ -84,11 +84,11 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <span class="badge rounded-3 fw-semibold <?= $row['status'] == 'Published' ? 'bg-danger' : 'bg-primary' ?>"><?= $row['status']; ?></span>
+                                                    <span class="badge rounded-3 fw-semibold <?= $row['status'] == 'Unpublished' ? 'bg-danger' : 'bg-primary' ?>"><?= $row['status']; ?></span>
                                                 </div>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a class="fw-semibold mb-0 fs-4" href="">View</a>
+                                                <a class="fw-semibold mb-0 fs-4" href="_materialsview.php?id=<?= $row['matId'] ?>">View</a>
                                             </td>
                                         </tr>
                                     <?php endwhile; ?>

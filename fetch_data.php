@@ -1,20 +1,21 @@
 <?php
 require_once "./controllers/database.php";
 
-$result1 = mysqli_query($con, "SELECT province, count(*) AS userCount, sum(adoptedPets) as countPets FROM users GROUP BY province");
-$rows1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
+$usersBylocation = mysqli_query($con, "SELECT province, COUNT(*) AS totalUsers, SUM(CASE WHEN adoptedPets > 0 THEN 1 ELSE 0 END) AS totalAdopters FROM users GROUP BY province");
+$result1 = mysqli_fetch_all($usersBylocation, MYSQLI_ASSOC);
 
-$result2 = mysqli_query($con, "SELECT type, count(*) AS petCount FROM pets GROUP BY type");
-$rows2 = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+$numOfPets = mysqli_query($con, "SELECT type, count(*) AS petCount FROM pets GROUP BY type");
+$result2 = mysqli_fetch_all($numOfPets, MYSQLI_ASSOC);
 
-$count = max(count($rows1), count($rows2)); // Use max to consider all rows from both tables
+$count = max(count($result1), count($result2)); // Use max to consider all rows from both tables
 
 $data = array();
 for ($i = 0; $i < $count; $i++) {
     $data[] = array(
-        "userCount" => isset($rows1[$i]) ? intval($rows1[$i]['userCount']) : 0,
-        "countPets" => isset($rows1[$i]) ? intval($rows1[$i]['countPets']) : 0,
-        "count" => isset($rows2[$i]) ? intval($rows2[$i]['petCount']) : 0,
+        "totalUsers" => isset($result1[$i]) ? intval($result1[$i]['totalUsers']) : 0,
+        "totalAdopters" => isset($result1[$i]) ? intval($result1[$i]['totalAdopters']) : 0,
+        "provinces" => isset($result1[$i]) ? $result1[$i]['province'] : '',
+        "petCount" => isset($result2[$i]) ? intval($result2[$i]['petCount']) : 0,
     );
 }
 

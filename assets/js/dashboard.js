@@ -57,7 +57,7 @@ $(function () {
     yaxis: {
       show: false,
       min: 0,
-      max: 5,
+      max: 3,
       tickAmount: 5,
       labels: {
         style: {
@@ -151,9 +151,10 @@ $(function () {
       dataType: 'json',
       success: function (data) {
         if (data.length > 0) {
-          userChart.series[0].data = data.map(obj => obj.userCount)
-          userChart.series[1].data = data.map(obj => obj.countPets)
-          petChart.series = data.map(obj => obj.count)
+          userChart.series[0].data = data.map(obj => obj.totalUsers)
+          userChart.series[1].data = data.map(obj => obj.totalAdopters)
+          userChart.xaxis.categories = data.map(obj => obj.provinces)
+          petChart.series = data.map(obj => obj.petCount)
 
           // Render the chart with updated data
           var chart = new ApexCharts(document.querySelector("#chart"), userChart);

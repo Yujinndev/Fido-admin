@@ -60,6 +60,8 @@
                             </div>
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-4">
+                                    <h1 class="card-title fw-semibold">PET DETAILS</h1>
+
                                     <div class="d-flex text-black">
                                         <div class="flex-shrink-0">
                                             <img src="<?= $row['petphoto'] ?>" class="img-fluid mt-2" style="width: 100px; border-radius: 10px;">
@@ -101,12 +103,13 @@
                         <div class="col-lg-8">
                             <form class="card mb-4" method="POST" action="/controllers/controller.php">
                                 <div class="card-body">
-                                    <h3 class="mt-n2">REQUESTER'S DETAIL</h3>
+                                    <h1 class="card-title fw-semibold">REQUESTER DETAILS</h1>
 
+                                    <hr>
                                     <div class="row">
                                         <label class="col-sm-2 col-form-label">Name: </label>
                                         <div class="col-sm-10">
-                                            <input type="hidden" class="form-control" name="userId" value="<?= $row['requestId'] ?>">
+                                            <input type="hidden" class="form-control" name="requestId" value="<?= $row['requestId'] ?>">
                                             <input type="text" readonly class="form-control" name="name" value="<?= $row['fullname'] ?>">
                                         </div>
                                     </div>
@@ -148,7 +151,7 @@
                                         <label for="reason" class="col-sm-2 col-form-label">Reason: </label>
                                         <div class="col-sm-10">
                                             <div class="form-floating">
-                                                <textarea class="form-control" readonly placeholder="Leave a comment here" name="reason" style="height: 175px"><?= $row['reason'] ?></textarea>
+                                            <b><textarea class="form-control" readonly placeholder="Leave a comment here" name="reason" style="height: 175px"><?= $row['reason'] ?></textarea></b>
                                             </div>
                                         </div>
                                     </div>
@@ -156,7 +159,7 @@
                                 </div>
                                 <div class="container">
                                     <button type="submit" name="accept-request" class="btn btn-primary float-end mb-2 mt-n3">ACCEPT</button>
-                                    <a href="/controllers/controller.php?deny-request=<?= $row['userId'] ?>" class="btn btn-outline-danger float-end m-2 mt-n3">DENY</a>
+                                    <a href="/controllers/controller.php?deny-request=<?= $row['requestId'] ?>" class="btn btn-outline-danger float-end m-2 mt-n3">DENY</a>
                                 </div>
                             </form>
                         </div>

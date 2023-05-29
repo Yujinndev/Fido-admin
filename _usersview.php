@@ -63,6 +63,9 @@
                         <div class="col-lg-8">
                             <form class="card mb-4" method="POST" action="/controllers/controller.php">
                                 <div class="card-body">
+                                    <h1 class="card-title fw-semibold">USER DETAILS</h1>
+
+                                    <hr>
                                     <div class="row">
                                         <label for="firstname" class="col-sm-2 col-form-label">First Name: </label>
                                         <div class="col-sm-10">
@@ -124,7 +127,7 @@
                                 </div>
                                 <div class="container">
                                     <button type="submit" name="update-user" class="btn btn-primary float-end mb-2 mt-n3">UPDATE</button>
-                                    <a href="/controllers/controller.php?deleteUser=<?= $row['userId'] ?>" class="btn btn-outline-danger float-end m-2 mt-n3">DELETE</a>
+                                    <a href="/controllers/controller.php?delete-user=<?= $row['userId'] ?>" class="btn btn-outline-danger float-end m-2 mt-n3">DELETE</a>
                                 </div>
                             </form>
                         </div>

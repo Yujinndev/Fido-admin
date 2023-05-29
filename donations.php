@@ -134,7 +134,7 @@
                                     <h6>Item #<?= ++$num ?></h6>
                                     <h2><?= $row['name'] ?></h2>
                                     <p><?= $row['description'] ?></p>
-                                    <a href="_donationsview.php" class="d-block f-2 mt-2 btn btn-outline-dark float-end">View all donators</a>
+                                    <a href="_donationsview.php?id=<?= $row['itemId'] ?>" class="d-block f-2 mt-2 btn btn-outline-dark float-end">View more</a>
                                 </div>
                             </div>
 

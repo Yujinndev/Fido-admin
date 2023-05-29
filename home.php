@@ -131,13 +131,11 @@
                 </div>
                 <ul class="timeline-widget mb-0 position-relative mb-n5">
                   <?php
-                  $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname, c.name  FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId LEFT JOIN itemdonations c ON a.itemId = c.itemId");
-                  while ($row = mysqli_fetch_assoc($result)) :
-                    $dt = new DateTime($row['dateTransac'], new DateTimeZone('UTC'));
-                    $dt->setTimezone(new DateTimeZone('Asia/Manila'));
-                    $dateTransac = $dt->format('m/d h:i A');
-
-                    $id = uniqid();
+                    $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname, c.name FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId LEFT JOIN itemdonations c ON a.itemId = c.itemId");
+                    while ($row = mysqli_fetch_assoc($result)) :
+                      $dt = new DateTime($row['dateTransac'], new DateTimeZone('UTC'));
+                      $dt->setTimezone(new DateTimeZone('Asia/Manila'));
+                      $dateTransac = $dt->format('m/d h:i A');
                   ?>
                     <li class="timeline-item d-flex position-relative overflow-hidden">
                       <div class="timeline-time flex-shrink-0 text-end text-success w-25"><?= $dateTransac ?></div>
@@ -145,7 +143,7 @@
                         <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                       </div>
-                      <div class="timeline-desc fw-semibold text-light mt-n1">Donation received from <?= $row['fullname'] ?> with an amount of Php <?= $row['totalAmount'] ?>.00 <p class="text-primary d-block fw-normal fs-2">Id: ****<?= $row['transacId'] ?></p>
+                      <div class="timeline-desc fw-semibold text-light mt-n1"><?= $row['fullname'] .' '. $row['remarks'] ?>  an amount of Php <?= $row['totalAmount'] ?>.00 <p class="text-primary d-block fw-normal fs-2">Id: ****<?= $row['transacId'] ?></p>
                       </div>
 
                     </li>
