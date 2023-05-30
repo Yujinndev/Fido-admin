@@ -20,19 +20,22 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function () {
-      // Get the table name from the URL parameter
-      const urlParams = new URLSearchParams(window.location.search);
-      const tableFromUrl = urlParams.get('table');
+    // Get the table name from the URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const tableFromUrl = urlParams.get('table');
 
-      // Check if a table is specified in the URL
-      if (tableFromUrl) {
+    // Check if a table is specified in the URL
+    if (tableFromUrl) {
+        const tableName = tableFromUrl.charAt(0).toUpperCase() + tableFromUrl.slice(1);
+
         updateFormInputs(tableFromUrl);
-      } else {
+        tableTitle.textContent = `Create / Add data in ${tableName}`;
+    } else {
         window.location.href = '/';
-      }
+    }
 
-      // Function to update form inputs based on the table
-      function updateFormInputs(selectedTable) {
+    // Function to update form inputs based on the table
+    function updateFormInputs(selectedTable) {
         var tableConfig = <?= json_encode($tables) ?>;
         var fields = tableConfig[selectedTable].fields;
 
@@ -40,20 +43,19 @@
         formInputs.empty();
 
         $.each(fields, function (field, fieldConfig) {
-          var input = '<div class="mb-3">' +
-                          '<label for="' + field + '" class="form-label">' + fieldConfig.label + ':</label>';
-
-          if (fieldConfig.type === 'textarea') {
-            input += '<textarea name="' + field + '" id="' + field + '" class="form-control" required></textarea>';
-          } else {
-            input += '<input type="' + fieldConfig.type + '" name="' + field + '" id="' + field + '" class="form-control" required>';
-          }
-
-          input += '</div>';
-          formInputs.append(input);
+            var input = '<hr><div class="row mb-2">' +
+                '<label for="' + field + '" class="col-4 col-form-label">' + fieldConfig.label + ':</label>' +
+                '<div class="col-8">';
+            if (fieldConfig.type === 'textarea') {
+                input += '<textarea name="' + field + '" id="' + field + '" class="form-control" required></textarea>';
+            } else {
+                input += '<input type="' + fieldConfig.type + '" name="' + field + '" id="' + field + '" class="form-control" required>';
+            }
+            input += '</div> </div>';
+            formInputs.append(input);
         });
-      }
-    });
+    }
+});
   </script>
 </head>
 </style>
@@ -73,16 +75,29 @@
 
       <div class="container-fluid">
         <div class="row">
-          <h5 class="card-title fw-semibold text-center">ADD / INSERT DATA</h5>
-
-          <form action="" method="POST">
-            <div id="formInputs">
-                <!-- Form inputs will be dynamically generated here -->
-            </div>
-
-            <button type="submit" name="insert" class="btn btn-primary float-end px-5">Submit</button>
-          </form>
+          <div class="col">
+            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+              <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="home.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">All Table</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Insert Data</li>
+              </ol>
+            </nav>
+          </div>
         </div>
+
+        <div class="row mt-n3">
+          <form class="card mb-4" method="POST" action="/controllers/controller.php">
+            <div class="card-body">
+              <h1 class="card-title fw-semibold mt-n3" id="tableTitle">TITLE</h1>
+              <input type="hidden" name="selectedTable" value="<?= $_GET['table'] ?>">
+              <div id="formInputs">
+                  <!-- Form inputs will be dynamically generated here -->
+              </div>
+              <button type="submit" name="insert" class="btn btn-primary float-end px-5">Submit</button>
+            </div>
+          </form>
+        </div>  
       </div>
     </div>
   </div>

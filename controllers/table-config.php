@@ -1,7 +1,33 @@
 <?php
   $tables = [
-    'users' => [
+    'pets' => [
       'label' => 'User Table',
+      'fields' => [
+        'name' => [
+          'label' => 'Name',
+          'type' => 'text'
+        ],
+        'type' => [
+          'label' => 'Type',
+          'type' => 'text'
+        ],
+        'age' => [
+          'label' => 'Age',
+          'type' => 'text'
+        ],
+        'status' => [
+          'label' => 'Status',
+          'type' => 'text'
+        ],
+        'availability' => [
+          'label' => 'Availability',
+          'type' => 'text'
+        ],
+      ]
+    ], // END OF TABLE `PETS` CONFIG
+
+    'users' => [
+      'label' => 'Users',
       'fields' => [
         'email' => [
           'label' => 'Email',
@@ -23,33 +49,105 @@
           'label' => 'Age',
           'type' => 'number'
         ],
+        'phoneNum' => [
+          'label' => 'Phone Number',
+          'type' => 'tel'
+        ],
+        'address' => [
+          'label' => 'Address [Barangay, Town, ZipCode]',
+          'type' => 'text'
+        ],
+        'province' => [
+          'label' => 'Province',
+          'type' => 'text'
+        ],
+        'province' => [
+          'label' => 'Province',
+          'type' => 'text'
+        ],
+        'role' => [
+          'label' => 'Role',
+          'type' => 'text'
+        ],
       ],
-    ],
+    ], // END OF TABLE `USERS` CONFIG
+
     'itemdonations' => [
-      'label' => 'User Table',
+      'label' => 'Item Donations',
       'fields' => [
-        'email' => [
-          'label' => 'Email',
-          'type' => 'email'
+        'name' => [
+          'label' => 'Name',
+          'type' => 'text'
         ],
-        'password' => [
-          'label' => 'Pass',
-          'type' => 'password'
+        'price' => [
+          'label' => 'Price',
+          'type' => 'number'
+        ],
+        'quarterlyStocks' => [
+          'label' => 'Quarterly Stocks',
+          'type' => 'number'
+        ],
+        'description' => [
+          'label' => 'Description',
+          'type' => 'textarea'
         ],
       ]
-    ],
-    'products' => [
-      'label' => 'User Table',
+    ], // END OF TABLE `ITEMDONATIONS` CONFIG
+
+    'requests' => [
+      'label' => 'Requests',
       'fields' => [
-        'email' => [
-          'label' => 'Email',
-          'type' => 'email'
+        'userId' => [
+          'label' => 'User Id',
+          'type' => 'text'
         ],
-        'password' => [
-          'label' => 'Pass',
-          'type' => 'password'
+        'petId' => [
+          'label' => 'Pet Id',
+          'type' => 'number'
+        ],
+        'dateRequested' => [
+          'label' => 'Date requested',
+          'type' => 'datetime'
+        ],
+        'requestStatus' => [
+          'label' => 'Status',
+          'type' => 'text'
+        ],
+        'reason' => [
+          'label' => 'Reason',
+          'type' => 'textarea'
         ],
       ]
-    ],
+    ], // END OF TABLE `REQUESTS` CONFIG
+
+    'materials' => [
+      'label' => 'Materials',
+      'fields' => [
+        'title' => [
+          'label' => 'Title',
+          'type' => 'text'
+        ],
+        'author' => [
+          'label' => 'Author Id',
+          'type' => 'number'
+        ],
+        'datePosted' => [
+          'label' => 'Date Posted',
+          'type' => 'datetime'
+        ],
+        'reference' => [
+          'label' => 'Reference',
+          'type' => 'text'
+        ],
+        'status' => [
+          'label' => 'Status',
+          'type' => 'text'
+        ],
+        'content' => [
+          'label' => 'Content',
+          'type' => 'textarea'
+        ],
+      ]
+    ], // END OF TABLE `REQUESTS` CONFIG    
   ];
 ?>

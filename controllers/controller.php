@@ -1,4 +1,5 @@
 <?php
+    require_once 'table-config.php';  
     require_once 'database.php';
 
     // FOR LOGIN AUTHENTICATION
@@ -179,7 +180,7 @@
     // FOR MATERIALS PROCESSES
     if(isset($_GET['delete-material'])) {
         $id = $_GET['delete-material'];
-        $stmt = $con->prepare("DELETE FROM educmat WHERE matId = ?");
+        $stmt = $con->prepare("DELETE FROM materials WHERE matId = ?");
         $stmt->bind_param("s", $id);
         $stmt->execute();
         
@@ -202,7 +203,7 @@
         $content = $_POST['content'];
         $status = $_POST['status'];
 
-        $stmt = $con->prepare("UPDATE educmat SET `title` = ?, `content` = ?, `reference` = ?, `status` = ? WHERE matId = ?");
+        $stmt = $con->prepare("UPDATE materials SET `title` = ?, `content` = ?, `reference` = ?, `status` = ? WHERE matId = ?");
         $stmt->bind_param("sssss", $title, $content, $reference, $status, $id);
         $stmt->execute();
 
@@ -297,19 +298,21 @@
     }
 
     // FOR INSERTING PROCESS
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['insert'])) {
         $selectedTable = $_POST['selectedTable'];
 
         if (isset($tables[$selectedTable])) {
             $tableConfig = $tables[$selectedTable];
             $fields = $tableConfig['fields'];
-
+    
             // Retrieve form data based on the selected table fields
             $formData = [];
             foreach ($fields as $field => $fieldConfig) {
-                $formData[$field] = $_POST[$field];
+                if (isset($_POST[$field])) {
+                    $formData[$field] = $_POST[$field];
+                }
             }
-
+    
             // Construct the INSERT statement
             $columns = implode(', ', array_keys($formData));
             $placeholders = implode(', ', array_fill(0, count($formData), '?'));
@@ -319,10 +322,9 @@
             $stmt = $con->prepare($sql);
             $stmt->bind_param(str_repeat('s', count($formData)), ...array_values($formData));
             $stmt->execute();
-
-            // Close the statement and connection
-            $stmt->close();
-            $con->close();
+            
+            header('Location: ../home.php');
+            exit();
         }
     }
 ?>  
