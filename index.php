@@ -31,7 +31,7 @@
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-right">
-           <!-- logo here -->
+          <img src="../assets/images/logos/Logo.png" style="width: 400px; height: 400px; aspect-ratio: 3/2; object-fit: contain">
         </div>
       </div>
     </div>
