@@ -8,34 +8,14 @@
 
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FIDO</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
 </head>
-
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
-
-  * {
-    font-family: 'Marcellus', serif;
-    letter-spacing: .5px;
-  }
-
-  ::-webkit-scrollbar {
-    width: 0.6em;
-    background-color: rgb(110, 110, 110);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: rgb(190, 190, 190);
-  }
-</style>
-
 <body>
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">

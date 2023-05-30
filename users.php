@@ -1,22 +1,21 @@
 <?php 
-  include 'controllers/database.php'; 
+    include 'controllers/database.php'; 
 
-  if (!isset($_SESSION['id'])) {
-    header('Location: index.php');
-  }
+    if (!isset($_SESSION['id'])) {
+        header('Location: index.php');
+    }
 ?>
 
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FIDO</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
 </head>
-
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
 
@@ -26,20 +25,20 @@
     }
     
     .floating-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: #007bff;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 9999;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
     }
 
     @keyframes fade-out {

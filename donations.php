@@ -1,133 +1,21 @@
 <?php 
-  include 'controllers/database.php'; 
+    include 'controllers/database.php'; 
 
-  if (!isset($_SESSION['id'])) {
-    header('Location: index.php');
-  }
+    if (!isset($_SESSION['id'])) {
+        header('Location: index.php');
+    }
 ?>
 
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FIDO</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
 </head>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
-
-    * {
-        font-family: 'Marcellus', serif;
-        letter-spacing: .5px;
-    }
-
-    .courses-container {
-        margin-top: 10px;
-    }
-
-    .course {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-        display: flex;
-        max-width: 100%;
-        margin: 20px;
-        overflow: hidden;
-        width: 700px;
-    }
-
-    .course h6 {
-        opacity: 0.6;
-        margin: 0;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-
-    .course h2 {
-        letter-spacing: 1px;
-        margin: 10px 0;
-    }
-
-    .course-preview {
-        background-color: #2A265F;
-        color: #fff;
-        padding: 30px;
-        max-width: 250px;
-    }
-
-    .course-info {
-        padding: 30px;
-        position: relative;
-        width: 100%;
-    }
-
-    .progress-container {
-        position: absolute;
-        top: 30px;
-        right: 30px;
-        text-align: right;
-        width: 150px;
-    }
-
-    .progress {
-        background-color: #bbb;
-        border-radius: 3px;
-        height: 5px;
-        width: 100%;
-        position: relative;
-    }
-
-    .filler {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        background-color: #2A265F;
-        border-radius: 3px;
-    }
-    .progress-text {
-        font-size: 10px;
-        opacity: 0.6;
-        letter-spacing: 1px;
-    }
-
-    .floating-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: #007bff;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 9999;
-    }
-
-    @keyframes fade-out {
-        0% {
-            background-color: transparent; /* Original color */
-        }
-        20% {
-            background-color: #b1fae4; /* Highlight color */
-        }
-        100% {
-            background-color: transparent; /* Original color */
-        }
-    }
-
-    .fade-out {
-        animation: fade-out 7s;
-    }
-</style>
-
 <body>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">

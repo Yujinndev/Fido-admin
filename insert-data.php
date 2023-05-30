@@ -16,6 +16,7 @@
   <title>FIDO</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function () {
@@ -55,14 +56,6 @@
     });
   </script>
 </head>
-
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
-
-  * {
-    font-family: 'Marcellus', serif;
-    letter-spacing: .5px;
-  }
 </style>
 
 <body>
