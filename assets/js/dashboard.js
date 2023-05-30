@@ -141,12 +141,11 @@ $(function () {
       fillSeriesColor: false,
     },
   };
-
   
   // FETCH VALUES FROM MYSQL PHP QUERY
   function fetchData() {
     $.ajax({
-      url: 'fetch_data.php',
+      url: 'controllers/fetch-data.php',
       type: 'GET',
       dataType: 'json',
       success: function (data) {
