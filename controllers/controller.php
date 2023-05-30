@@ -1,5 +1,5 @@
 <?php
-    require_once "database.php";
+    require_once 'database.php';
 
     // FOR LOGIN AUTHENTICATION
     if(isset($_POST['login'])) {
@@ -22,6 +22,8 @@
             $row = $result->fetch_assoc();
             $_SESSION['email'] = $row['email'];
             $_SESSION['id'] = $row['userId'];
+
+            $_SESSION['message'] = 'Welcome admin, ' . $row['firstname'];
 
             session_regenerate_id(true); 
 
@@ -46,6 +48,14 @@
         $stmt = $con->prepare("DELETE FROM pets WHERE petId = ?");
         $stmt->bind_param("s", $id);
         $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Deleted';
+                $_SESSION['message'] = 'Deleted Pet #' . $id . ' successfully';
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to delete Pet #' . $id;
+            }
         
         header('Location: ../pets.php');
         exit();
@@ -62,17 +72,35 @@
         $stmt = $con->prepare("UPDATE pets SET `name` = ?, `type` = ?, `age` = ?, `status` = ?, `availability` = ? WHERE `petId` = ?");
         $stmt->bind_param("ssssss", $name, $type, $age, $status, $availability, $id);
         $stmt->execute();
-
+        
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Updated';
+                $_SESSION['message'] = 'Successfully updated Pet #' . $id;
+                $_SESSION['updatedId'] = $id;
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to update Pet #' . $id;
+            }
+        
+        // Redirect to the home page
         header('Location: ../pets.php');
-        exit();
+        exit;
     }
-
+    
     // FOR USER PROCESSES
     if(isset($_GET['delete-user'])) {
         $id = $_GET['delete-user'];
         $stmt = $con->prepare("DELETE FROM users WHERE userId = ?");
         $stmt->bind_param("s", $id);
         $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Deleted';
+                $_SESSION['message'] = 'Deleted User #' . $id . ' successfully';
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to delete User #' . $id;
+            }
         
         header('Location: ../users.php');
         exit();
@@ -92,6 +120,15 @@
         $stmt->bind_param("ssssssss", $firstname, $lastname, $email, $age, $address, $phoneNum, $role, $id);
         $stmt->execute();
 
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Updated';
+                $_SESSION['message'] = 'Successfully updated User #' . $id;
+                $_SESSION['updatedId'] = $id;
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to update User #' . $id;
+            }
+
         header('Location: ../users.php');
         exit();
     }
@@ -105,6 +142,15 @@
         $stmt->bind_param("ss", $denied, $id);
         $stmt->execute();
 
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Denied Request #' . $id . ' successfully';
+                $_SESSION['updatedId'] = $id;
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to deny Request #' . $id;
+            }
+
         header('Location: ../requests.php');
         exit();
     }
@@ -117,6 +163,15 @@
         $stmt->bind_param("ss", $accepted, $id);
         $stmt->execute();
 
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Updated';
+                $_SESSION['message'] = 'Accepted Request #' . $id . ' successfully';
+                $_SESSION['updatedId'] = $id;
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to accept Request #' . $id;
+            }
+
         header('Location: ../requests.php');
         exit();
     }
@@ -128,6 +183,14 @@
         $stmt->bind_param("s", $id);
         $stmt->execute();
         
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Deleted';
+                $_SESSION['message'] = 'Deleted material #' . $id . ' successfully';
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to delete material #' . $id;
+            }
+
         header('Location: ../materials.php');
         exit();
     }
@@ -142,18 +205,28 @@
         $stmt = $con->prepare("UPDATE educmat SET `title` = ?, `content` = ?, `reference` = ?, `status` = ? WHERE matId = ?");
         $stmt->bind_param("sssss", $title, $content, $reference, $status, $id);
         $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Updated';
+                $_SESSION['message'] = 'Updated material #' . $id . ' successfully';
+                $_SESSION['updatedId'] = $id;
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to update material #' . $id;
+            }
         
         header('Location: ../materials.php');
         exit();
     }
 
     // FOR DONATION PROCESSES
-    if(isset($_POST['withdraw'])) {
+    if(isset($_GET['withdraw'])) {
         $transacId = uniqid();
         $userId = $_SESSION['id'];
-        $itemId = $_POST['itemId'];
-        $dateTransac = date('Y-m-d H:i:s');
-        $totalAmount = $_POST['totalAmount'];
+        $itemId = $_GET['itemId'];
+        $date = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $dateTransac = $date->format('Y-m-d H:i:s');
+        $totalAmount = $_GET['totalAmount'];
         $remarks = 'Withdrawn';
 
         // Insert into donationtransac table
@@ -162,11 +235,94 @@
         $stmt1->execute();
 
         // Update itemdonations table
-        $stmt2 = $con->prepare("UPDATE itemdonations SET `currentStocks` = 0 WHERE `itemId` = ?");
-        $stmt2->bind_param("s", $itemId);
+        $stmt2 = $con->prepare("UPDATE itemdonations SET `currentStocks` = 0, `lastWithdrawn` = ? WHERE `itemId` = ?");
+        $stmt2->bind_param("ss", $dateTransac, $itemId);
         $stmt2->execute();
+
+        if ($stmt2->affected_rows > 0) {
+            $_SESSION['status'] = 'Updated';
+            $_SESSION['message'] = 'Successfully withdrawn the amount of Item #' . $itemId;
+            $_SESSION['updatedId'] = $itemId;
+        } else {
+            $_SESSION['status'] = 'Failed';
+            $_SESSION['message'] = 'Unable to withdraw the amount of Item #' . $itemId;
+        }
+
+        header('Location: ../_donationsview.php?id=' . $itemId);
+        exit();
+    }
+
+    if(isset($_GET['delete-item'])) {
+        $id = $_GET['delete-item'];
+
+        $stmt = $con->prepare("DELETE FROM itemdonations WHERE itemId = ?");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        
+            if ($stmt->affected_rows > 0) {
+                $_SESSION['status'] = 'Deleted';
+                $_SESSION['message'] = 'Deleted item #' . $id . ' successfully';
+            } else {
+                $_SESSION['status'] = 'Failed';
+                $_SESSION['message'] = 'Unable to delete item #' . $id;
+            }
 
         header('Location: ../donations.php');
         exit();
+    }
+
+    
+    if(isset($_POST['update-item'])) {
+        $id = $_POST['itemId'];
+        $name = $_POST['name'];
+        $description = $_POST['description'];
+        $price = $_POST['price'];
+        $quarterlyStocks = $_POST['quarterlyStocks'];
+
+        $stmt = $con->prepare("UPDATE `itemdonations` SET `name` = ?, `description` = ?, `price` = ?, `quarterlyStocks` = ? WHERE `itemId` = ?");
+        $stmt->bind_param("sssss", $name, $description, $price, $quarterlyStocks, $id);
+        $stmt->execute();
+        
+        if ($stmt->affected_rows > 0) {
+            $_SESSION['status'] = 'Updated';
+            $_SESSION['message'] = 'Updated item #' . $id . ' successfully';
+            $_SESSION['updatedId'] = $id;
+        } else {
+            $_SESSION['status'] = 'Failed';
+            $_SESSION['message'] = 'Unable to update item #' . $id;
+        }
+
+        header('Location: ../donations.php');
+        exit();
+    }
+
+    // FOR INSERTING PROCESS
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $selectedTable = $_POST['selectedTable'];
+
+        if (isset($tables[$selectedTable])) {
+            $tableConfig = $tables[$selectedTable];
+            $fields = $tableConfig['fields'];
+
+            // Retrieve form data based on the selected table fields
+            $formData = [];
+            foreach ($fields as $field => $fieldConfig) {
+                $formData[$field] = $_POST[$field];
+            }
+
+            // Construct the INSERT statement
+            $columns = implode(', ', array_keys($formData));
+            $placeholders = implode(', ', array_fill(0, count($formData), '?'));
+            $sql = "INSERT INTO $selectedTable ($columns) VALUES ($placeholders)";
+
+            // Prepare and bind the parameters
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param(str_repeat('s', count($formData)), ...array_values($formData));
+            $stmt->execute();
+
+            // Close the statement and connection
+            $stmt->close();
+            $con->close();
+        }
     }
 ?>  

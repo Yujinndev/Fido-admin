@@ -18,6 +18,22 @@
     font-family: 'Marcellus', serif;
     letter-spacing: .5px;
   }
+
+  @keyframes fade-out {
+    0% {
+      background-color: transparent; /* Original color */
+    }
+    20% {
+      background-color: #b1fae4; /* Highlight color */
+    }
+    100% {
+      background-color: transparent; /* Original color */
+    }
+  }
+
+  .fade-out {
+    animation: fade-out 7s;
+  }
 </style>
 
 <body>
@@ -25,15 +41,16 @@
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 
     <!-- Sidebar Start -->
-    <?php require "side-navigation.php"; ?>
+    <?php require 'components/side-navigation.php'; ?>
     <!--  Sidebar End -->
 
     <div class="body-wrapper">
       <!--  Header Start -->
-      <?php require "header-navigation.php"; ?>
+      <?php require 'components/header-navigation.php'; ?>
       <!--  Header End -->
 
       <div class="container-fluid">
+
         <div class="row">
           <div class="col">
             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
@@ -45,11 +62,30 @@
             </nav>
           </div>
         </div>
+        <?php
+          $status = isset($_SESSION['status']) ? $_SESSION['status'] : '';
+          $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+          $alertClass = $status === 'Updated' || $status === 'Inserted' ? 'alert-success' : 'alert-danger';
+          unset($_SESSION['status']);
+          unset($_SESSION['message']);
+          
+          if (!empty($status)): ?>
+            <div class="alert <?= $alertClass ?> alert-dismissible fade show" role="alert">
+              <strong><?= $message ?>!</strong> 
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
         <?php if (isset($_GET['id'])):
           $id = $_GET['id'];
           $query = mysqli_query($con, "SELECT * FROM itemdonations WHERE itemId = $id");
           $details = mysqli_fetch_assoc($query);
+
+          $rowClass = '';
+
+          if (!empty($status) && $details['itemId'] == $_SESSION['updatedId']) {
+              $rowClass = $status === 'Updated' ? 'fade-out' : '';
+          } 
         ?>
 
         <div class="row">
@@ -61,11 +97,10 @@
                 </div>
                 <ul class="timeline-widget mb-0 position-relative mb-n5">
                   <?php
-                    $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname, c.name FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId LEFT JOIN itemdonations c ON a.itemId = c.itemId WHERE c.itemId = $id");
+                    $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname, c.name FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId LEFT JOIN itemdonations c ON a.itemId = c.itemId WHERE c.itemId = $id ORDER BY `dateTransac` DESC");
                     if (mysqli_num_rows($result) > 0) :
                       while ($row = mysqli_fetch_assoc($result)) :
                         $dt = new DateTime($row['dateTransac'], new DateTimeZone('UTC'));
-                        $dt->setTimezone(new DateTimeZone('Asia/Manila'));
                         $dateTransac = $dt->format('m/d h:i A');
                   ?>
                     <li class="timeline-item d-flex position-relative overflow-hidden">
@@ -108,6 +143,7 @@
                 <div class="row">
                   <label for="name" class="col-sm-2 col-form-label">Name: </label>
                   <div class="col-sm-10">
+                    <input type="hidden" readonly class="form-control" name="itemId" value="<?= $details['itemId'] ?>">
                     <input type="text" class="form-control" name="name" value="<?= $details["name"] ?>">
                   </div>
                 </div>
@@ -130,7 +166,7 @@
                   </div>
                   <div class="col">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" placeholder="Enter number" value="<?= $details["quarterlyStocks"] ?>">
+                      <input type="number" class="form-control" placeholder="Enter number" name="quarterlyStocks" value="<?= $details["quarterlyStocks"] ?>">
                       <label for="floatingInput">Quarterly Target Stocks</label>
                     </div>
                   </div>
@@ -138,17 +174,15 @@
 
                 <?php $totalAmount = intval($details['price']) * intval($details['currentStocks']) ?>
                 <hr>
-                <div class="row">
+                <div class="row <?= $rowClass ?>">
                   <label for="price" class="col-sm-2 col-form-label">Price: </label>
-                  <form action="/controllers/controller.php" method="post">
                     <div class="col-sm-10 col-lg-7">
                       <input type="text" readonly class="form-control" name="totalAmount" value="<?= $totalAmount ?>">
                     </div>
                     <div class="col-sm-10 col-lg-2 ms-2">
                       <input type="hidden" readonly class="form-control" name="itemId" value="<?= $details['itemId'] ?>">
-                      <button type="sumbit" class="btn btn-outline-primary" name="withdraw" <?= $details['currentStocks'] <= 0 ? 'disabled' : '' ?>>WITHDRAW</button>
+                      <a href="<?= ($details['currentStocks'] > 0) ? '/controllers/controller.php?withdraw=true&itemId=' . $details['itemId'] . '&totalAmount=' . $totalAmount : 'javascript:void(0)' ?>" class="btn btn-outline-primary" name="withdraw">WITHDRAW</a>
                     </div>
-                  </form>
                 </div>
 
                 <hr>
@@ -163,8 +197,8 @@
               </div>
 
               <div class="container">
-                <button type="submit" name="update-material" class="btn btn-primary float-end mb-2 mt-n3">UPDATE</button>
-                <a href="/controllers/controller.php?delete-material=<?= $details["itemId"] ?>" class="btn btn-outline-danger float-end m-2 mt-n3">DELETE</a>
+                <button type="submit" name="update-item" class="btn btn-primary float-end mb-2 mt-n3">UPDATE</button>
+                <a href="/controllers/controller.php?delete-item=<?= $details["itemId"] ?>" class="btn btn-outline-danger float-end m-2 mt-n3">DELETE</a>
               </div>
             </form>
             </div>

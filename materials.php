@@ -16,22 +16,51 @@
     font-family: 'Marcellus', serif;
     letter-spacing: .5px;
   }
+
+  @keyframes fade-out {
+        0% {
+            background-color: transparent; /* Original color */
+        }
+        20% {
+            background-color: #b1fae4; /* Highlight color */
+        }
+        100% {
+            background-color: transparent; /* Original color */
+        }
+    }
+
+    .fade-out {
+        animation: fade-out 7s;
+    }
 </style>
 <body>
     <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 
         <!-- Sidebar Start -->
-        <?php require 'side-navigation.php'; ?>
+        <?php require 'components/side-navigation.php'; ?>
         <!--  Sidebar End -->
 
         <div class="body-wrapper">
-        <!--  Header Start -->
-        <?php require 'header-navigation.php'; ?>
-        <!--  Header End -->
+            <!--  Header Start -->
+            <?php require 'components/header-navigation.php'; ?>
+            <!--  Header End -->
 
             <div class="container-fluid">
+            <?php
+                $status = isset($_SESSION['status']) ? $_SESSION['status'] : '';
+                $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+                $alertClass = $status === 'Updated' || $status === 'Inserted' ? 'alert-success' : 'alert-danger';
+                unset($_SESSION['status']);
+                unset($_SESSION['message']);
+                
+                if (!empty($status)): ?>
+                    <div class="alert <?= $alertClass ?> alert-dismissible fade show" role="alert">
+                        <strong><?= $message ?>!</strong> 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            <?php endif; ?>
+            
                 <div class="col-lg-12 d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body p-4">
@@ -67,10 +96,15 @@
 
                                         while($row = mysqli_fetch_assoc($result)):
                                             $dt = new DateTime($row['datePosted'], new DateTimeZone('UTC'));
-                                            $dt->setTimezone(new DateTimeZone('Asia/Manila'));
                                             $datePosted = $dt->format('m/d h:i a');
+                                            
+                                            $rowClass = '';
+
+                                            if (!empty($status) && $row['matId'] == $_SESSION['updatedId']) {
+                                                $rowClass = $status === 'Updated' ? 'fade-out' : '';
+                                            } 
                                     ?>
-                                        <tr class="border-bottom">
+                                        <tr class="border-bottom <?= $rowClass ?>">
                                             <td class="border-bottom-0"><h6 class="fw-semibold mb-0"><?= '0' . ++$num ?></h6></td>
                                             <td class="border-bottom-0">
                                                 <h6 class="fw-semibold mb-1"><?= $row['title']; ?></h6>

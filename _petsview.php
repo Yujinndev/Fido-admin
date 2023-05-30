@@ -25,12 +25,12 @@
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 
         <!-- Sidebar Start -->
-        <?php require 'side-navigation.php'; ?>
+        <?php require 'components/side-navigation.php'; ?>
         <!--  Sidebar End -->
 
         <div class="body-wrapper">
             <!--  Header Start -->
-            <?php require 'header-navigation.php'; ?>
+            <?php require 'components/header-navigation.php'; ?>
             <!--  Header End -->
 
             <div class="container-fluid">
@@ -100,9 +100,12 @@
 
                                     <hr>
                                     <div class="row">
-                                        <label for="availability" class="col-sm-2 col-form-label">Availability: </label>
+                                        <label for="availability" class="col-sm-2 col-form-label">Role: </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="availability" value="<?= $row['availability'] ?>">
+                                            <select name="availability" class="form-select" aria-label="Default select example" required>
+                                                <option value="Available" <?= $row['availability'] == 'Available' ? 'selected' : '' ?> >Available</option>
+                                                <option value="Not Available" <?= $row['availability'] == 'Not Available' ? 'selected' : ''?> >Not Available</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

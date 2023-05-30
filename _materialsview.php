@@ -25,12 +25,12 @@
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 
         <!-- Sidebar Start -->
-        <?php require 'side-navigation.php'; ?>
+        <?php require 'components/side-navigation.php'; ?>
         <!--  Sidebar End -->
 
         <div class="body-wrapper">
             <!--  Header Start -->
-            <?php require 'header-navigation.php'; ?>
+            <?php require 'components/header-navigation.php'; ?>
             <!--  Header End -->
 
             <div class="container-fluid">
@@ -54,9 +54,12 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="card mb-4">
+
                                 <div class="card-body d-flex align-items-center justify-content-center text-center">
-                                    <img src="<?= $row['photo'] ?>" alt="" style="height: 275px; aspect-ratio: 3/2; object-fit: contain" class="rounded-circle w-100" />
+                                    <img src="<?= isset($row['photo']) ? $row['photo'] : 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png' ?>" alt="" style="height: 275px; aspect-ratio: 3/2; object-fit: contain" class="rounded-circle w-100" />
                                 </div>
+                                <h1 class="card-title fw-semibold m-3 mt-0">AUTHOR DETAILS</h1>
+
                                 <div class="row mx-3 mb-3">
                                     <label class="col-4 ms-3 col-form-label">Name: </label>
                                     <div class="ms-n3 col-8">

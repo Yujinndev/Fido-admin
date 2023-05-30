@@ -1,4 +1,10 @@
-<?php include 'controllers/database.php'; ?>
+<?php 
+  include 'controllers/database.php'; 
+
+  if (!isset($_SESSION['id'])) {
+    header('Location: index.php');
+  }
+?>
 
 <!doctype html>
 <html lang="en">
@@ -35,15 +41,25 @@
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 
     <!-- Sidebar Start -->
-    <?php require 'side-navigation.php'; ?>
+    <?php require 'components/side-navigation.php'; ?>
     <!--  Sidebar End -->
 
     <div class="body-wrapper">
       <!--  Header Start -->
-      <?php require 'header-navigation.php'; ?>
+      <?php require 'components/header-navigation.php'; ?>
       <!--  Header End -->
 
       <div class="container-fluid">
+      <?php
+        $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+        unset($_SESSION['message']);
+        
+        if (!empty($message)): ?>
+          <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <strong><?= $message ?>!</strong> 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      <?php endif; ?>
         <!--  Row 1 -->
         <div class="row m-n3">
           <div class="col-lg-8 d-flex align-items-strech">
@@ -95,19 +111,17 @@
                 <div class="card bg-dark">
                   <div class="card-body">
                     <div class="row align-items-start">
-                      <div class="col-8">
+                      <div class="col-10">
                         <h5 class="card-title mb-0 fw-semibold text-light"> TOTAL DONATION </h5>
                         <p class="text-danger mb-3 fs-2 mb-0">AS OF <?= $currentDate = date('F d, Y') ?></p>
-                        <h4 class="fw-semibold text-light mb-3 text-light"><?= 'Php ' . mysqli_fetch_assoc($donation)['sum']; ?></h4>
+                        <h4 class="fw-semibold text-light mb-3 text-light"><?= 'Php ' . mysqli_fetch_assoc($donation)['sum'] .'.00'; ?></h4>
                         <div class="d-flex align-items-center pb-1">
-                          <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-arrow-up-left text-success"></i>
-                          </span>
-                          <p class="text-light me-1 fs-3 mb-0">+9%</p>
-                          <p class="fs-3 mb-0 text-light">Last Quarter</p>
+                          <span class="round-8 bg-success rounded-circle me-2 d-inline-block"></span>
+                          <p class="text-light me-1 fs-2 mb-0">Last Withdrawn:</p>
+                          <p class="fs-3 mb-0 text-success"><?= $lastWithdrawn ?></p>
                         </div>
                       </div>
-                      <div class="col-4">
+                      <div class="col-2">
                         <div class="d-flex justify-content-end">
                           <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
                             <i class="ti ti-currency-dollar fs-6"></i>
@@ -131,10 +145,9 @@
                 </div>
                 <ul class="timeline-widget mb-0 position-relative mb-n5">
                   <?php
-                    $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname, c.name FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId LEFT JOIN itemdonations c ON a.itemId = c.itemId");
+                    $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname, c.name FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId LEFT JOIN itemdonations c ON a.itemId = c.itemId ORDER BY `dateTransac` DESC");
                     while ($row = mysqli_fetch_assoc($result)) :
                       $dt = new DateTime($row['dateTransac'], new DateTimeZone('UTC'));
-                      $dt->setTimezone(new DateTimeZone('Asia/Manila'));
                       $dateTransac = $dt->format('m/d h:i A');
                   ?>
                     <li class="timeline-item d-flex position-relative overflow-hidden">
@@ -189,7 +202,7 @@
                     <tbody>
                       <?php
                       $num = 0;
-                      $result = mysqli_query($con, "SELECT b.*, sum(totalAmount) as sum, concat(b.firstname, ' ', b.lastname) as fullname FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId GROUP BY userId ORDER BY sum(totalAmount) desc");
+                      $result = mysqli_query($con, "SELECT b.*, sum(totalAmount) as sum, concat(b.firstname, ' ', b.lastname) as fullname FROM donationtransac a LEFT JOIN users b ON a.userId = b.userId WHERE `remarks` = 'Donated' GROUP BY userId ORDER BY sum(totalAmount) desc");
 
                       $rankLabels = array("First", "Second", "Third"); // Add more labels as needed
                       $rankColors = array("bg-success", "bg-danger", "bg-warning"); // Add more colors as needed

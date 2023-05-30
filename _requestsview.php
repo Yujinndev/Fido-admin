@@ -25,12 +25,12 @@
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 
         <!-- Sidebar Start -->
-        <?php require 'side-navigation.php'; ?>
+        <?php require 'components/side-navigation.php'; ?>
         <!--  Sidebar End -->
 
         <div class="body-wrapper">
             <!--  Header Start -->
-            <?php require 'header-navigation.php'; ?>
+            <?php require 'components/header-navigation.php'; ?>
             <!--  Header End -->
 
             <div class="container-fluid">
@@ -55,12 +55,12 @@
                         <div class="col-lg-4">
                             <div class="card mb-4">
                                 <div class="card-body d-flex align-items-center justify-content-center text-center">
-                                    <img src="<?= $row['userphoto'] ?>" alt="" style="height: 275px; aspect-ratio: 3/2; object-fit: contain" class="rounded-circle w-100" />
+                                    <img src="<?= isset($row['userphoto']) ? $row['userphoto'] : 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png' ?>" alt="" style="height: 275px; aspect-ratio: 3/2; object-fit: contain" class="rounded-circle w-100" />
                                 </div>
                             </div>
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-4">
-                                    <h1 class="card-title fw-semibold">PET DETAILS</h1>
+                                    <h1 class="card-title fw-semibold">REQUESTED PET DETAILS</h1>
 
                                     <div class="d-flex text-black">
                                         <div class="flex-shrink-0">
