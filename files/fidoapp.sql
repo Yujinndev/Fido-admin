@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2023 at 03:51 PM
+-- Generation Time: May 30, 2023 at 09:50 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -101,12 +101,12 @@ INSERT INTO `educmat` (`matId`, `title`, `content`, `author`, `datePosted`, `ref
 CREATE TABLE `itemdonations` (
   `itemId` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `photo` varchar(255) NOT NULL,
+  `photo` varchar(255) DEFAULT NULL,
   `description` varchar(2500) NOT NULL,
   `price` int(11) NOT NULL,
-  `currentStocks` int(11) NOT NULL,
+  `currentStocks` int(11) DEFAULT NULL,
   `quarterlyStocks` int(11) NOT NULL,
-  `lastWithdrawn` datetime NOT NULL
+  `lastWithdrawn` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `pets` (
   `age` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `availability` varchar(255) NOT NULL,
-  `photo` varchar(255) NOT NULL
+  `photo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -182,9 +182,9 @@ CREATE TABLE `users` (
   `phoneNum` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `province` varchar(255) NOT NULL,
-  `photo` varchar(255) NOT NULL,
-  `role` enum('Admin','User','','') NOT NULL,
-  `adoptedPets` int(11) NOT NULL
+  `photo` varchar(255) DEFAULT NULL,
+  `role` enum('Admin','User') NOT NULL,
+  `adoptedPets` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

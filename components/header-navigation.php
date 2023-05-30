@@ -1,10 +1,14 @@
 <?php
-$id = $_SESSION['id'];
-$result = mysqli_query($con, "SELECT photo FROM users WHERE userId = $id");
-$row = mysqli_fetch_assoc($result);
+    $id = $_SESSION['id'];
+    $result = mysqli_query($con, "SELECT photo FROM users WHERE userId = $id");
+    $row = mysqli_fetch_assoc($result);
 
-$pet = mysqli_query($con, "SELECT count(*) as count FROM pets");
-$donation = mysqli_query($con, "SELECT sum(totalAmount) as sum FROM donationtransac");
+    $pet = mysqli_query($con, "SELECT count(*) as count FROM pets");
+    $donation = mysqli_query($con, "SELECT sum(totalAmount) as sum FROM donationtransac WHERE `remarks` = 'Donated' ");
+    $item = mysqli_query($con, "SELECT * FROM itemdonations GROUP BY lastWithdrawn DESC");
+
+    $dt = new DateTime(mysqli_fetch_assoc($item)['lastWithdrawn'], new DateTimeZone('UTC'));
+    $lastWithdrawn = $dt->format('m/d h:i A');
 ?>
 
 <header class="app-header fixed-top position-absolute" style="width: 100%">
@@ -26,7 +30,7 @@ $donation = mysqli_query($con, "SELECT sum(totalAmount) as sum FROM donationtran
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?= $row && isset($row['photo']) ? $row['photo'] : '' ?>" alt="" width="35" height="35" class="rounded-circle">
+                        <img src="<?= isset($row['photo']) ? $row['photo'] : 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png' ?>" alt="" width="35" height="35" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                         <div class="message-body">
@@ -42,7 +46,7 @@ $donation = mysqli_query($con, "SELECT sum(totalAmount) as sum FROM donationtran
                                 <i class="ti ti-list-check fs-6"></i>
                                 <p class="mb-0 fs-3">My Task</p>
                             </a>
-                            <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                            <a href="../controllers/controller.php?logout=true" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                         </div>
                     </div>
                 </li>
