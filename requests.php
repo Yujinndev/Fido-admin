@@ -126,8 +126,11 @@
                     </div>
                 </div>
             </div>
+            <a href="insert-data.php?table=requests" class="btn btn-primary floating-button rounded-5" data-bs-toggle="tooltip" data-bs-placement="left" title="Insert an item"><i class="ti ti-plus"></i></a>
+        </div>
+    </div>
 
-            <?php include 'scripts.php' ?>
+        <?php include 'scripts.php' ?>
 </body>
 
 </html>

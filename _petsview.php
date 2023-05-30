@@ -74,7 +74,10 @@
                                     <div class="row">
                                         <label for="type" class="col-sm-2 col-form-label">Type: </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="type" value="<?= $row['type'] ?>">
+                                            <select name="type" class="form-select" required>
+                                                <option value="Dog" <?= $row['type'] == 'Dog' ? 'selected' : '' ?> >Dog</option>
+                                                <option value="Cat" <?= $row['type'] == 'Cat' ? 'selected' : ''?> >Cat</option>
+                                            </select>
                                         </div>
                                     </div>
 

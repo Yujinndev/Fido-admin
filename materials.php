@@ -75,7 +75,7 @@
                                     <tbody>
                                     <?php
                                         $num = 0;
-                                        $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname FROM educmat a LEFT JOIN users b on a.author = b.userId");
+                                        $result = mysqli_query($con, "SELECT a.*, concat(b.firstname, ' ', b.lastname) as fullname FROM materials a LEFT JOIN users b on a.author = b.userId");
 
                                         while($row = mysqli_fetch_assoc($result)):
                                             $dt = new DateTime($row['datePosted'], new DateTimeZone('UTC'));
@@ -116,6 +116,7 @@
                     </div>
                 </div>
             </div>
+            <a href="insert-data.php?table=materials" class="btn btn-primary floating-button rounded-5" data-bs-toggle="tooltip" data-bs-placement="left" title="Insert an item"><i class="ti ti-plus"></i></a>
         </div>
     </div>
 

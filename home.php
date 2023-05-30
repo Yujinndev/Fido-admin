@@ -64,8 +64,8 @@
                     <div class="row align-items-center">
                       <div class="col-7">
                         <h5 class="card-title mb-0 fw-semibold text-light">NUMBER OF PETS</h5>
-                        <p class="text-danger mb-3 fs-2 mb-0">AS OF <?= $currentDate = date('F d, Y') ?></p>
-                        <h4 class="fw-semibold text-light mb-3 text-light"><?= mysqli_fetch_assoc($pet)['count']; ?> OVERALL</h4>
+                        <p class="text-danger mb-2 fs-2 mb-0">AS OF <?= $currentDate = date('F d, Y') ?></p>
+                        <h4 class="fw-semibold text-light mb-2 text-light"><?= mysqli_fetch_assoc($pet)['count']; ?> OVERALL</h4>
                         <div class="d-flex align-items-center">
                           <div class="me-4">
                             <span class="round-8 bg-success rounded-circle me-2 d-inline-block"></span>

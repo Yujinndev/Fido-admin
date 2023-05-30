@@ -44,7 +44,7 @@
                 <?php
                 if (isset($_GET['id'])) :
                     $id = $_GET['id'];
-                    $query = mysqli_query($con, "SELECT a.*, b.*, concat(b.firstname, ' ', b.lastname) as fullname FROM educmat a LEFT JOIN users b on a.author = b.userId WHERE matId = $id");
+                    $query = mysqli_query($con, "SELECT a.*, b.*, concat(b.firstname, ' ', b.lastname) as fullname FROM materials a LEFT JOIN users b on a.author = b.userId WHERE matId = $id");
                     $row = mysqli_fetch_assoc($query);
                 ?>
                     <div class="row">

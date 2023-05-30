@@ -90,7 +90,7 @@
                                                 </td>
                                                 <td class="border-bottom-0">
                                                     <div class="d-flex align-items-center">
-                                                        <img src="<?= $row['photo'] ?>" alt="" style="width: 45px; height: 45px; aspect-ratio: 3/2; object-fit: contain" class="rounded-circle" />
+                                                        <img src="<?= isset($row['photo']) ? $row['photo'] : 'https://victoriapets.ca/wp-content/themes/neve-child/images/placeholder-pet-image.jpg' ?>" alt="" style="width: 45px; height: 45px; aspect-ratio: 3/2; object-fit: contain" class="rounded-circle" />
                                                         <div class="ms-3">
                                                             <h6 class="fw-semibold mb-1"><?= $row['name'] ?></h6>
                                                             <span class="fw-normal"><?= $row['age'] ?></span>
@@ -120,6 +120,7 @@
                     </div>
                 </div>
             </div>
+            <a href="insert-data.php?table=pets" class="btn btn-primary floating-button rounded-5" data-bs-toggle="tooltip" data-bs-placement="left" title="Insert an item"><i class="ti ti-plus"></i></a>
         </div>
     </div>
 

@@ -45,7 +45,10 @@
             <?php endif; ?>
 
                 <div class="row">
+                    <h1 class="card-title fw-semibold m-3 mb-1">All Item Donations</h1>
+
                     <div class="container d-flex justify-content-center flex-wrap align-items-center">
+                    
                     <?php
                         $num = 0;
                         $result = mysqli_query($con, "SELECT * FROM itemdonations");
@@ -61,7 +64,7 @@
                     ?>
                             <div class="container-fluid d-flex w-75 m-2 border border-light rounded-3 overflow-hidden <?= $rowClass ?>">
                                 <div class="container-fluid w-50 bg-light p-4 m-0">
-                                    <img src="<?= isset($row['photo']) ? $row['photo'] : '' ?>" alt="photo" style="height: 180px; aspect-ratio: 3/2; object-fit: contain; max-width: 100%; filter: drop-shadow(0px 0px 1px rgb(255, 255, 255)); margin-bottom: 10px;" class="w-100" />
+                                    <img src="<?= isset($row['photo']) ? $row['photo'] : 'https://www.warnersstellian.com/Content/images/product_image_not_available.png' ?>" alt="photo" style="height: 180px; aspect-ratio: 3/2; object-fit: contain; max-width: 100%; filter: drop-shadow(0px 0px 1px rgb(255, 255, 255)); margin-bottom: 10px;" class="w-100" />
                                 </div>
                                 <div class="course-info">
                                     <div class="progress-container">
@@ -81,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <a href="insert-data.php?table=products" class="btn btn-primary floating-button rounded-5" data-bs-toggle="tooltip" data-bs-placement="left" title="Insert an item"><i class="ti ti-plus"></i></a>
+            <a href="insert-data.php?table=itemdonations" class="btn btn-primary floating-button rounded-5" data-bs-toggle="tooltip" data-bs-placement="left" title="Insert an item"><i class="ti ti-plus"></i></a>
         </div>
     </div>
 

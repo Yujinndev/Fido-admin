@@ -61,10 +61,6 @@
           'label' => 'Province',
           'type' => 'text'
         ],
-        'province' => [
-          'label' => 'Province',
-          'type' => 'text'
-        ],
         'role' => [
           'label' => 'Role',
           'type' => 'text'
