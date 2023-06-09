@@ -164,6 +164,12 @@
         $stmt->bind_param("ss", $accepted, $id);
         $stmt->execute();
 
+        $unavailable = 'Not Available';
+
+        $stmt1 = $con->prepare("UPDATE pets SET `availability` = ? WHERE `petId` = ?");
+        $stmt1->bind_param("ss", $unavailable, $id);
+        $stmt1->execute();
+
             if ($stmt->affected_rows > 0) {
                 $_SESSION['status'] = 'Updated';
                 $_SESSION['message'] = 'Accepted Request #' . $id . ' successfully';

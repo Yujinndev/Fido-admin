@@ -106,6 +106,7 @@
                                         <label class="col-sm-2 col-form-label">Name: </label>
                                         <div class="col-sm-10">
                                             <input type="hidden" class="form-control" name="requestId" value="<?= $row['requestId'] ?>">
+                                            <input type="hidden" class="form-control" name="petId" value="<?= $row['petId'] ?>">
                                             <input type="text" readonly class="form-control" name="name" value="<?= $row['fullname'] ?>">
                                         </div>
                                     </div>
